@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Telefon ta’miri</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1f6fd1">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+:root{--bg:#f3f6fb;--card:#fff;--text:#12233f;--muted:#5b6b85;--accent:#1f6fd1;--gold:#ffb81f;--line:#dde5f1;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1a2e;--card:#16263f;--text:#eaf1fb;--muted:#9fb0c9;--accent:#4a94f0;--line:#243754}}
+:root[data-theme="dark"]{--bg:#0e1a2e;--card:#16263f;--text:#eaf1fb;--muted:#9fb0c9;--accent:#4a94f0;--line:#243754}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.45}
+.wrap{max-width:560px;margin:0 auto;padding:16px}
+.hero{background:linear-gradient(160deg,#0f2a5a,#1f6fd1);color:#fff;border-radius:18px;padding:22px 18px}
+.hero h1{margin:0 0 4px;font-size:26px}
+.hero h1 span{color:var(--gold)}
+.hero p{margin:0;opacity:.92}
+.btns{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.btn{flex:1;min-width:140px;text-align:center;padding:13px 12px;border-radius:12px;font-weight:700;text-decoration:none;font-size:16px;border:0;cursor:pointer}
+.btn.main{background:var(--gold);color:#12233f}
+.btn.alt{background:rgba(255,255,255,.18);color:#fff}
+h2{font-size:18px;margin:22px 0 10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+.card b{display:block;margin-bottom:2px}
+.card small{color:var(--muted)}
+form{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px}
+label{font-size:14px;color:var(--muted)}
+input,select,textarea{width:100%;padding:11px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text);font:inherit}
+form .btn{background:var(--accent);color:#fff;width:100%}
+.info{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+.info p{margin:6px 0}
+.info a{color:var(--accent);font-weight:700;text-decoration:none}
+.note{color:var(--muted);font-size:13px;margin-top:8px}
+.price{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+.price:last-child{border-bottom:0}.price span:last-child{font-weight:700;color:var(--accent);text-align:right;white-space:nowrap}
+.price small{display:block;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <h1>Telefon <span>ta’miri</span></h1>
+    <p>Azizbek usta · Tez, sifatli, kafolat bilan.</p>
+    <p style="margin-top:6px">🕗 Har kuni 08:00 – 20:00</p>
+    <div class="btns">
+      <a class="btn main" href="tel:+998993110820">📞 Qo‘ng‘iroq qilish</a>
+      <a class="btn alt" href="https://t.me/Azz_77za" target="_blank" rel="noopener">✈️ Telegramda yozish</a>
+      <a class="btn alt" href="#buyurtma">📝 Buyurtma</a>
+    </div>
+  </div>
+
+  <h2>Xizmatlar</h2>
+  <div class="grid">
+    <div class="card"><b>📱 Ekran</b><small>Oynasi singan yoki ishlamayotgan ekran</small></div>
+    <div class="card"><b>🔋 Batareya</b><small>Tez zaryad tugashi, shishib ketishi</small></div>
+    <div class="card"><b>⚙️ Dastur</b><small>Sozlash, qayta o‘rnatish, tiklash</small></div>
+    <div class="card"><b>🔌 Zaryad uyasi</b><small>Zaryad olmayotgan telefon</small></div>
+    <div class="card"><b>💧 Suv tekkan</b><small>Tozalash va tekshirish</small></div>
+    <div class="card"><b>🔊 Dinamik / mikrofon</b><small>Ovoz bilan bog‘liq nosozlik</small></div>
+  </div>
+  <p class="note">Aniq narx telefon modeliga qarab, ko‘rikdan so‘ng aytiladi.</p>
+
+  <h2>Narxlar</h2>
+  <div class="info" id="prices"><p class="note">Narxlar yuklanmoqda…</p></div>
+
+  <h2 id="buyurtma">Buyurtma qoldirish</h2>
+  <form id="f">
+    <div><label for="n">Ismingiz</label><input id="n" autocomplete="name" placeholder="Ismingiz"></div>
+    <div><label for="m">Telefon modeli</label><input id="m" placeholder="Masalan: Samsung A12"></div>
+    <div><label for="t">Muammo turi</label>
+      <select id="t"><option>Ekran</option><option>Batareya</option><option>Dastur</option><option>Zaryad uyasi</option><option>Suv tekkan</option><option>Boshqa</option></select></div>
+    <div><label for="c">Qo‘shimcha</label><textarea id="c" rows="3" placeholder="Nima bo‘ldi?"></textarea></div>
+    <button class="btn" type="submit">SMS orqali yuborish</button>
+  </form>
+  <p class="note">Tugma bosilganda SMS ilovasi ustaning raqamiga tayyor xabar bilan ochiladi.</p>
+
+  <h2>Manzil</h2>
+  <div class="info">
+    <p>📍 Surxondaryo, Angor tumani, Qorsuv, taksi ruprasi</p>
+    <p>📞 <a href="tel:+998993110820">+998 99 311 08 20</a></p>
+    <p>✈️ <a href="https://t.me/Azz_77za" target="_blank" rel="noopener">@Azz_77za</a></p>
+    <p>📢 <a href="https://t.me/azizbek_usta_angor" target="_blank" rel="noopener">Telegram kanalimiz</a></p>
+    <p>🕗 Har kuni 08:00 – 20:00</p>
+    <p>🗺 <a href="https://www.google.com/maps/search/?api=1&query=Qorsuv+Angor+Surxondaryo" target="_blank" rel="noopener">Xaritada ochish</a></p>
+  </div>
+</div>
+<script>
+// Google Jadvaldan "Veb'da e'lon qilish" (CSV) havolasini shu yerga qo'ying:
+var SHEET_URL = "";
+function parseCSV(t){var r=[],row=[],c="",q=false;for(var i=0;i<t.length;i++){var ch=t[i];
+ if(q){if(ch=='"'){if(t[i+1]=='"'){c+='"';i++}else q=false}else c+=ch}
+ else if(ch=='"')q=true;else if(ch==','){row.push(c);c=""}
+ else if(ch=='\n'){row.push(c);r.push(row);row=[];c=""}else if(ch!='\r')c+=ch}
+ if(c||row.length){row.push(c);r.push(row)}return r}
+function showPrices(list){var box=document.getElementById('prices');box.innerHTML='';
+ if(!list.length){box.innerHTML='<p class="note">Narxlar hozircha kiritilmagan. Aniq narx uchun qo‘ng‘iroq qiling.</p>';return}
+ list.forEach(function(it){var d=document.createElement('div');d.className='price';
+  var a=document.createElement('span');a.textContent=it[0];
+  if(it[2]){var sm=document.createElement('small');sm.textContent=it[2];a.appendChild(sm)}
+  var b=document.createElement('span');b.textContent=it[1]||'kelishiladi';d.appendChild(a);d.appendChild(b);box.appendChild(d)})}
+(function(){
+ if(!SHEET_URL){showPrices([]);return}
+ fetch(SHEET_URL+(SHEET_URL.indexOf('?')>-1?'&':'?')+'t='+Date.now()).then(function(r){return r.text()}).then(function(t){
+  var rows=parseCSV(t).slice(1).filter(function(r){return r[0]&&r[0].trim()});
+  try{localStorage.setItem('narxlar',JSON.stringify(rows))}catch(e){}
+  showPrices(rows)}).catch(function(){
+  var c=[];try{c=JSON.parse(localStorage.getItem('narxlar')||'[]')}catch(e){}showPrices(c)})
+})();
+document.getElementById('f').addEventListener('submit',function(e){
+  e.preventDefault();
+  var v=function(id){return document.getElementById(id).value.trim()};
+  var text='Salom! Telefon ta’miri uchun buyurtma.\nIsm: '+v('n')+'\nModel: '+v('m')+'\nMuammo: '+v('t')+(v('c')?'\nIzoh: '+v('c'):'');
+  window.location.href='sms:+998993110820?body='+encodeURIComponent(text);
+});
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}
+</script>
+</body>
+</html>
