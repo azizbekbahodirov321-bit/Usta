@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Usta Biznes – o‘yin</title>
+<meta name="theme-color" content="#0b3a30">
+<style>
+:root{--board:#0b3a30;--deep:#072821;--panel:#114a3d;--copper:#e09a58;--silver:#dfe9e4;--mute:#9fb9af;--line:#1f6655;--good:#5fd68a;--bad:#ef7d70;box-sizing:border-box}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--board);color:var(--silver);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.45;touch-action:manipulation;padding:env(safe-area-inset-top,0px) 0 calc(24px + env(safe-area-inset-bottom,0px))}
+.wrap{max-width:520px;margin:0 auto;padding:14px 16px}
+h1{font-size:22px;margin:2px 0 12px}
+.stats{display:grid;grid-template-columns:1.4fr 1fr 1.2fr;gap:8px}
+.st{background:var(--deep);border:1px solid var(--line);border-radius:12px;padding:9px 10px}
+.st small{display:block;color:var(--mute);font-size:12px}
+.st b{font-size:16px;font-variant-numeric:tabular-nums}
+.tabs{display:flex;gap:8px;margin:14px 0 10px}
+.tab{flex:1;padding:11px;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--silver);font:inherit;font-weight:600;cursor:pointer}
+.tab.on{background:var(--copper);color:#1b1006;border-color:var(--copper)}
+.card{background:var(--deep);border:1px solid var(--line);border-radius:14px;padding:13px;margin-bottom:10px}
+.card h3{margin:0 0 4px;font-size:17px}
+.card p{margin:3px 0;color:var(--mute);font-size:14px}
+.card b{color:var(--silver)}
+.btn{display:block;width:100%;margin-top:10px;padding:13px;border:0;border-radius:12px;background:var(--copper);color:#1b1006;font:inherit;font-weight:800;font-size:16px;cursor:pointer}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.sec{background:var(--panel);color:var(--silver);font-weight:700}
+.tag{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;background:var(--panel);margin-left:6px;vertical-align:middle}
+.tag.ok{background:var(--good);color:#06281b;font-weight:700}
+.msg{min-height:44px;margin:10px 0;padding:10px 12px;border-radius:12px;background:var(--panel);font-size:14px}
+.empty{text-align:center;color:var(--mute);padding:26px 8px}
+.over{position:fixed;inset:0;background:rgba(7,40,33,.97);display:flex;align-items:center;justify-content:center;padding:24px;text-align:center}
+.over[hidden]{display:none}
+.big{font-size:44px;font-weight:800;color:var(--copper);margin:6px 0}
+.foot{margin-top:18px;color:var(--mute);font-size:13px;text-align:center}
+:focus-visible{outline:3px solid var(--copper);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Usta Biznes</h1>
+  <div class="stats">
+    <div class="st"><small>Pul (so‘m)</small><b id="m"></b></div>
+    <div class="st"><small>Kun</small><b id="d"></b></div>
+    <div class="st"><small>Maqsad</small><b id="g"></b></div>
+  </div>
+  <div class="tabs"><button class="tab on" id="t1">Bozor</button><button class="tab" id="t2">Ustaxona <span id="cnt"></span></button></div>
+  <div class="msg" id="msg"></div>
+  <div id="v"></div>
+  <button class="btn sec" id="nx">Keyingi kun (ijara 50 000)</button>
+  <div class="foot">Haqiqiy telefon buzilsa: Azizbek usta, <a href="tel:+998993110820" style="color:var(--copper)">+998 99 311 08 20</a></div>
+  <div class="foot"><a href="#" id="rs" style="color:var(--mute)">Yangi o‘yin</a></div>
+</div>
+<div class="over" id="ov" hidden><div><div id="ot" style="font-size:30px;font-weight:800"></div><div class="big" id="os"></div><p id="od" style="color:var(--mute)"></p><button class="btn" id="oa">Qayta o‘ynash</button></div></div>
+<script>
+var GOAL=15000000,DAYS=30,RENT=50000,START=2000000;
+var MODELS=[['Samsung A12',1100000],['Samsung A32',1900000],['Redmi 9A',800000],['Redmi Note 10',1700000],['iPhone 8',1800000],['iPhone 11',4000000],['Infinix Hot 10',900000],['Tecno Spark 8',950000]];
+var DEF=[['Ekrani singan',.18,.28],['Batareyasi eskirgan',.07,.12],['Zaryad olmaydi',.06,.10],['Dasturi buzilgan',.03,.06],['Suv tekkan',.22,.36]];
+var S,tab=1;
+function $(i){return document.getElementById(i)}
+function f(n){return Math.round(n).toLocaleString('ru-RU')}
+function rnd(a,b){return a+Math.random()*(b-a)}
+function k(n){return Math.round(n/10000)*10000}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+var uid=0;
+function offer(){var m=pick(MODELS),d=pick(DEF),b=m[1],est=k(b*rnd(d[1],d[2]));
+ return{id:++uid+Date.now(),model:m[0],def:d[0],base:b,buy:k(b*rnd(.4,.72)),est:est,act:k(est*rnd(.95,1.4)),hid:Math.random()<.3?k(b*rnd(.1,.22)):0}}
+function market(){var a=[];for(var i=0;i<4;i++)a.push(offer());return a}
+function bid(p){return k(p.base*rnd(.74,.94)*S.factor)}
+function fresh(){S={money:START,day:1,factor:1,mk:market(),inv:[],sold:0,over:false};save()}
+function save(){try{localStorage.setItem('tycoon',JSON.stringify(S))}catch(e){}}
+try{S=JSON.parse(localStorage.getItem('tycoon')||'null')}catch(e){}
+if(!S||S.over)fresh();
+function say(t){$('msg').textContent=t}
+function render(){
+ $('m').textContent=f(S.money);$('d').textContent=S.day+' / '+DAYS;$('g').textContent=f(GOAL);
+ $('cnt').textContent=S.inv.length?'('+S.inv.length+')':'';
+ $('t1').className='tab'+(tab===1?' on':'');$('t2').className='tab'+(tab===2?' on':'');
+ var h='';
+ if(tab===1){h=S.mk.length?S.mk.map(function(o){
+  return '<div class="card"><h3>'+o.model+'</h3><p>'+o.def+'</p><p>Narxi: <b>'+f(o.buy)+'</b></p><p>Ta’mir taxminan: <b>'+f(o.est)+'</b></p><p>Tuzatilsa sotuv taxminan: <b>'+f(o.base*.84*S.factor)+'</b></p>'
+  +'<button class="btn" data-b="'+o.id+'"'+(S.money<o.buy?' disabled':'')+'>Sotib olish</button></div>'}).join(''):'<div class="empty">Bugun bozorda telefon qolmadi. Ertaga yangilari keladi.</div>'}
+ else{h=S.inv.length?S.inv.map(function(p){
+  var fx=p.fixed;
+  return '<div class="card"><h3>'+p.model+'<span class="tag'+(fx?' ok':'')+'">'+(fx?'Tuzatilgan':'Singan')+'</span></h3><p>'+p.def+'</p><p>Sarflangan: <b>'+f(p.spent)+'</b></p>'
+  +(fx?'<p>Xaridor taklifi: <b>'+f(p.bid)+'</b></p><button class="btn" data-s="'+p.id+'">Sotish</button>'
+  :'<p>Ta’mir taxminan: <b>'+f(p.est)+'</b></p><button class="btn" data-r="'+p.id+'"'+(S.money<p.est?' disabled':'')+'>Ta’mirlash</button><button class="btn sec" data-x="'+p.id+'">Siniq holda sotish ('+f(k(p.spent*.8))+')</button>')+'</div>'}).join(''):'<div class="empty">Ustaxona bo‘sh. Bozordan telefon sotib oling.</div>'}
+ $('v').innerHTML=h;save()}
+function over(win,txt){S.over=true;save();$('ot').textContent=win?'G‘alaba!':'O‘yin tugadi';$('os').textContent=f(S.money);$('od').textContent=txt;$('ov').hidden=false}
+$('v').onclick=function(e){var t=e.target,i;
+ if(i=t.getAttribute('data-b')){var o=S.mk.filter(function(x){return String(x.id)===i})[0];if(!o||S.money<o.buy)return;
+  S.money-=o.buy;S.mk=S.mk.filter(function(x){return x!==o});S.inv.push({id:o.id,model:o.model,def:o.def,base:o.base,est:o.est,act:o.act,hid:o.hid,spent:o.buy,fixed:false});say(o.model+' sotib olindi. Endi ustaxonada tuzating.')}
+ else if(i=t.getAttribute('data-r')){var p=S.inv.filter(function(x){return String(x.id)===i})[0];if(!p||S.money<p.est)return;
+  var tot=Math.min(S.money,p.act+p.hid);S.money-=tot;p.spent+=tot;p.fixed=true;p.bid=bid(p);
+  say(p.hid?'Ta’mir '+f(p.act)+' bo‘ldi. Qo‘shimcha nosozlik chiqdi: yana '+f(p.hid)+'!':'Ta’mir '+f(p.act)+' bo‘ldi. '+p.model+' ishlayapti.')}
+ else if(i=t.getAttribute('data-x')){var z=S.inv.filter(function(x){return String(x.id)===i})[0];if(!z)return;
+  var pr=k(z.spent*.8);S.money+=pr;S.inv=S.inv.filter(function(x){return x!==z});say(z.model+' siniq holda '+f(pr)+' ga sotildi. Zarar: '+f(z.spent-pr)+'.')}
+ else if(i=t.getAttribute('data-s')){var q=S.inv.filter(function(x){return String(x.id)===i})[0];if(!q)return;
+  S.money+=q.bid;S.inv=S.inv.filter(function(x){return x!==q});S.sold++;var pf=q.bid-q.spent;
+  say(q.model+' '+f(q.bid)+' ga sotildi. '+(pf>=0?'Foyda: ':'Zarar: ')+f(Math.abs(pf))+'.');
+  if(S.money>=GOAL){render();return over(true,S.day+'-kunda maqsadga yetdingiz. Sotilgan telefonlar: '+S.sold+'.')}}
+ else return;render()};
+$('nx').onclick=function(){S.day++;S.money-=RENT;S.factor=rnd(.92,1.08);S.mk=market();
+ S.inv.forEach(function(p){if(p.fixed)p.bid=bid(p)});
+ var cheapest=Math.min.apply(null,S.mk.map(function(o){return o.buy}));
+ say('Yangi kun. Bozor yangilandi, narxlar o‘zgardi.');render();
+ if(S.money<0)return over(false,'Pul tugadi, ijarani to‘lay olmadingiz.');
+ if(S.money<cheapest&&!S.inv.length)return over(false,'Telefon sotib olishga ham, tuzatishga ham pul qolmadi.');
+ if(S.day>DAYS)over(false,DAYS+' kun tugadi, maqsadga yetmadingiz. Sotilgan telefonlar: '+S.sold+'.')};
+$('t1').onclick=function(){tab=1;render()};$('t2').onclick=function(){tab=2;render()};
+function again(){fresh();$('ov').hidden=true;tab=1;say('Boshlandi! Bozordan arzon telefon sotib oling, tuzating va foydaga soting.');render()}
+$('oa').onclick=again;$('rs').onclick=function(e){e.preventDefault();if(confirm('Yangi o‘yin boshlansinmi?'))again()};
+say('Maqsad: '+DAYS+' kun ichida '+f(GOAL)+' so‘mga yetish. Bozordan arzon telefon oling, tuzating va foydaga soting.');
+render();
+</script>
+</body>
+</html>
