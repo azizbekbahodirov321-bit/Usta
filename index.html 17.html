@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Telefon ta’miri – Azizbek usta</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b3a30">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+:root{--board:#0b3a30;--deep:#072821;--panel:#114a3d;--copper:#e09a58;--silver:#dfe9e4;--mute:#9fb9af;--line:#1f6655;box-sizing:border-box}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:var(--board);color:var(--silver);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5;padding-top:env(safe-area-inset-top,0px);padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+a{color:inherit}
+.wrap{max-width:560px;margin:0 auto;padding:0 18px}
+:focus-visible{outline:3px solid var(--copper);outline-offset:2px}
+header{padding:22px 0 8px}
+.shop{font-size:15px;color:var(--mute);margin:0}
+.status{display:inline-flex;align-items:center;gap:8px;margin:14px 0 0;padding:7px 12px;border:1px solid var(--line);border-radius:99px;font-size:14px}
+.dot{width:10px;height:10px;border-radius:50%;background:#e45b4d}
+.open .dot{background:#5fd68a}
+h1{font-size:34px;line-height:1.1;margin:18px 0 6px;font-weight:800;letter-spacing:-.5px}
+.lead{margin:0;color:var(--mute);max-width:34ch}
+.call{display:block;margin:22px 0 0;padding:18px 20px;background:var(--copper);color:#1b1006;border-radius:16px;text-decoration:none}
+.call small{display:block;font-size:13px;font-weight:600;opacity:.8}
+.call b{display:block;font-size:30px;line-height:1.15;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.3px}
+.trace{height:2px;margin:30px 0 0;background:linear-gradient(90deg,var(--copper) 0 22%,var(--line) 22% 100%);position:relative}
+.trace:after{content:"";position:absolute;left:22%;top:-4px;width:10px;height:10px;border-radius:50%;background:var(--copper)}
+h2{font-size:22px;margin:26px 0 4px}
+.sub{margin:0 0 12px;color:var(--mute);font-size:14px}
+.list{list-style:none;margin:0;padding:0;background:var(--deep);border-radius:14px;border:1px solid var(--line)}
+.list li{display:flex;justify-content:space-between;gap:14px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.list li:last-child{border-bottom:0}
+.list .p{font-weight:700;color:var(--copper);text-align:right;font-variant-numeric:tabular-nums}
+.list .n small{display:block;color:var(--mute);font-size:13px}
+.ticket{background:var(--silver);color:#0d2a23;border-radius:14px;padding:18px 16px;position:relative}
+.ticket:before{content:"";position:absolute;left:12px;right:12px;top:-1px;height:8px;background:radial-gradient(circle at 6px 0,var(--board) 5px,transparent 5.5px) 0 0/16px 8px repeat-x}
+label{display:block;font-size:14px;font-weight:600;margin:12px 0 4px}
+input,select,textarea{width:100%;padding:12px;border:1.5px solid #7f9c92;border-radius:10px;background:#fff;color:#0d2a23;font:inherit}
+button.send{width:100%;margin-top:16px;padding:15px;border:0;border-radius:12px;background:var(--board);color:#fff;font:inherit;font-weight:700;font-size:17px;cursor:pointer}
+.hint{font-size:13px;color:#46665c;margin:10px 0 0}
+.where p{margin:6px 0}
+.where a{color:var(--copper);font-weight:700}
+footer{padding:26px 0 8px;font-size:13px;color:var(--mute)}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--deep);border-top:1px solid var(--line);padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;max-width:none}
+nav a{flex:1;text-align:center;padding:12px 6px;border-radius:12px;text-decoration:none;font-weight:700;font-size:15px;background:var(--panel)}
+nav a.go{background:var(--copper);color:#1b1006}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="shop">Azizbek usta · Angor, Qorsuv</p>
+    <p class="status" id="st"><span class="dot"></span><span id="stt">Ish vaqti: 08:00 dan 20:00 gacha</span></p>
+    <h1>Telefoningiz buzildimi? Tuzatib beramiz.</h1>
+    <p class="lead">Ekran, batareya, dastur va zaryad uyasi ta’miri. Kafolat bilan.</p>
+    <a class="call" href="tel:+998993110820"><small>Hozir qo‘ng‘iroq qiling</small><b>+998 99 311 08 20</b></a>
+  </header>
+
+  <div class="trace" aria-hidden="true"></div>
+
+  <h2>Xizmatlar va narxlar</h2>
+  <p class="sub">Aniq narx telefon modeliga qarab, ko‘rikdan keyin aytiladi.</p>
+  <ul class="list" id="prices"></ul>
+
+  <div class="trace" aria-hidden="true"></div>
+
+  <h2 id="buyurtma">Buyurtma qoldirish</h2>
+  <p class="sub">Ma’lumotni yozing, xabar ustaning raqamiga SMS bo‘lib ketadi.</p>
+  <form class="ticket" id="f">
+    <label for="n">Ismingiz</label><input id="n" autocomplete="name">
+    <label for="m">Telefon modeli</label><input id="m" placeholder="Masalan: Samsung A12">
+    <label for="t">Nima bo‘ldi?</label>
+    <select id="t"><option>Ekran</option><option>Batareya</option><option>Dastur</option><option>Zaryad uyasi</option><option>Suv tekkan</option><option>Boshqa</option></select>
+    <label for="c">Qo‘shimcha</label><textarea id="c" rows="3"></textarea>
+    <button class="send" type="submit">SMS yuborish</button>
+    <p class="hint">SMS ilovangiz tayyor xabar bilan ochiladi. Yuborishni o‘zingiz tasdiqlaysiz.</p>
+  </form>
+
+  <div class="trace" aria-hidden="true"></div>
+
+  <h2>Qayerdamiz</h2>
+  <div class="where">
+    <p>Surxondaryo, Angor tumani, Qorsuv, taksi ruprasi</p>
+    <p>Har kuni 08:00 – 20:00</p>
+    <p><a href="https://www.google.com/maps/search/?api=1&query=Qorsuv+Angor+Surxondaryo" target="_blank" rel="noopener">Xaritada ochish</a></p>
+    <p><a href="https://t.me/azizbek_usta_angor" target="_blank" rel="noopener">Telegram kanalimiz</a></p>
+  </div>
+  <footer><a href="privacy.html">Maxfiylik siyosati</a></footer>
+</div>
+
+<nav aria-label="Tezkor tugmalar">
+  <a class="go" href="tel:+998993110820">Qo‘ng‘iroq</a>
+  <a href="https://t.me/Azz_77za" target="_blank" rel="noopener">Telegram</a>
+  <a href="#buyurtma">Buyurtma</a>
+</nav>
+
+<script>
+// Google Jadvaldan "Veb’da e’lon qilish" (CSV) havolasini shu yerga qo‘ying:
+var SHEET_URL = "";
+var DEFAULTS = [["Ekran almashtirish","","Singan yoki ishlamayotgan ekran"],["Batareya almashtirish","","Tez zaryad tugashi, shishib ketishi"],["Dastur sozlash","","Qayta o‘rnatish, tiklash"],["Zaryad uyasi ta’miri","","Zaryad olmayotgan telefon"],["Suv tekkan telefon","","Tozalash va tekshirish"],["Dinamik va mikrofon","","Ovoz bilan bog‘liq nosozlik"]];
+function parseCSV(t){var r=[],row=[],c="",q=false;for(var i=0;i<t.length;i++){var ch=t[i];
+ if(q){if(ch=='"'){if(t[i+1]=='"'){c+='"';i++}else q=false}else c+=ch}
+ else if(ch=='"')q=true;else if(ch==','){row.push(c);c=""}
+ else if(ch=='\n'){row.push(c);r.push(row);row=[];c=""}else if(ch!='\r')c+=ch}
+ if(c||row.length){row.push(c);r.push(row)}return r}
+function show(list){var ul=document.getElementById('prices');ul.innerHTML='';
+ list.forEach(function(it){var li=document.createElement('li');
+  var a=document.createElement('span');a.className='n';a.textContent=it[0];
+  if(it[2]){var s=document.createElement('small');s.textContent=it[2];a.appendChild(s)}
+  var b=document.createElement('span');b.className='p';b.textContent=it[1]||'kelishiladi';
+  li.appendChild(a);li.appendChild(b);ul.appendChild(li)})}
+show(DEFAULTS);
+if(SHEET_URL){fetch(SHEET_URL+(SHEET_URL.indexOf('?')>-1?'&':'?')+'t='+Date.now()).then(function(r){return r.text()}).then(function(t){
+ var rows=parseCSV(t).slice(1).filter(function(r){return r[0]&&r[0].trim()});
+ try{localStorage.setItem('narxlar',JSON.stringify(rows))}catch(e){}
+ if(rows.length)show(rows)}).catch(function(){
+ try{var c=JSON.parse(localStorage.getItem('narxlar')||'[]');if(c.length)show(c)}catch(e){}})}
+// Ochiq/yopiq holati (08:00–20:00)
+(function(){var d=new Date(),h=d.getHours()+d.getMinutes()/60,st=document.getElementById('st'),tx=document.getElementById('stt');
+ if(h>=8&&h<20){st.className='status open';tx.textContent='Hozir ochiq, 20:00 gacha'}
+ else{tx.textContent=h<8?'Hozir yopiq, 08:00 da ochiladi':'Hozir yopiq, ertaga 08:00 da ochiladi'}})();
+document.getElementById('f').addEventListener('submit',function(e){
+ e.preventDefault();var v=function(id){return document.getElementById(id).value.trim()};
+ var text='Salom! Telefon ta’miri uchun buyurtma.\nIsm: '+v('n')+'\nModel: '+v('m')+'\nMuammo: '+v('t')+(v('c')?'\nIzoh: '+v('c'):'');
+ window.location.href='sms:+998993110820?body='+encodeURIComponent(text)});
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}
+</script>
+</body>
+</html>
